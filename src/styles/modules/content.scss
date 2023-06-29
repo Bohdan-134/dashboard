@@ -1,0 +1,16 @@
+@import '../utils/main.utils.scss';
+
+.content {
+    padding: 41px 95px 41px 71px;
+    flex-grow: 1;
+    background-color: #FAFBFF;
+    overflow-y: scroll;
+}
+
+.content-header {
+    margin-bottom: 51px;
+}
+
+.content-title {
+    @include font(24px, 500, 24px, $COLOR__BLACK);
+}
