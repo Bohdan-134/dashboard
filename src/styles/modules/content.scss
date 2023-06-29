@@ -13,6 +13,11 @@
 .content-title {
     margin-bottom: 51px;
     @include font(24px, 500, 24px, $COLOR__BLACK);
+    .hello {
+        display: inline-block;
+        animation: wobble-hor-bottom 1s 1s both;
+        animation-iteration-count: 2;
+    }
 }
 
 .customers-content-header {
@@ -27,6 +32,8 @@
         @include font(14px, 400, 14px, $COLOR__GREEN);
     }
 }
+
+
 
 .search-form {
     padding: 0 8px;
@@ -61,3 +68,25 @@
         }
     }
 }
+
+@keyframes wobble-hor-bottom {
+    100% {
+      transform: translateX(0%);
+      transform-origin: 50% 50%;
+    }
+    15% {
+      transform: rotate(-15deg);
+    }
+    30% {
+      transform: rotate(15deg);
+    }
+    45% {
+      transform: rotate(-8deg);
+    }
+    60% {
+      transform: rotate(6deg);
+    }
+    75% {
+      transform: rotate(-4deg);
+    }
+  }
