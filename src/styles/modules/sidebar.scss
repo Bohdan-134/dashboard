@@ -1,6 +1,6 @@
 @import '../utils/main.utils.scss';
 .sidebar {
-    padding: 36px 10px 76px 39px;
+    padding: 36px 10px 67px 28px;
     width: 306px;
     background-color: $COLOR__WHITE;
     box-shadow: 0px 10px 60px 0px rgba(226, 236, 249, 0.50);
@@ -8,7 +8,7 @@
 }
 
 .sidebar-header {
-    margin-bottom: 64px;
+    margin-bottom: 54px;
 }
 
 .logo-wrapper {
@@ -20,8 +20,8 @@
         margin-left: 8px;
         @include flex(row, null, flex-end);
         .logo {
-            margin-right: 4px;
-            @include font(26px, 600, 22px, $COLOR__BLACK);
+            margin-right: 6px;
+            @include font(26px, 600, 25px, $COLOR__BLACK);
         }
         .version {
             @include font(10px, 500, 10px, #838383)
@@ -40,19 +40,134 @@
 
 .nav-list {
     .nav-item {
+        margin-bottom: 19px;
         .nav-button {
             width: 250px;
-            padding: 11px;
+            padding: 11px 9px;
+            border-radius: 8px;
             background-color: transparent;
+            transition: .3s;
             @include flex(row, null, center);
-            svg {
+            .nav-icon,
+            .nav-icon-chevron {
+                @include flex(row, center, center);
+                svg {
+                    path {
+                        transition: .3s;
+                    }
+                }
+            }
+            .nav-icon {
                 margin-right: 14px;
             }
+            .nav-icon.customers {
+                svg {
+                    path {
+                        &:nth-child(1) {
+                            fill: #9197B3;
+                        }
+                        &:nth-child(2) {
+                            stroke: #9197B3;
+                        }
+                        &:nth-child(3) {
+                            fill: #9197B3;
+                        }
+                    }
+                }
+            }
             .nav-name {
+                text-align: start;
+                flex: 1;
+                transition: .3s;
                 @include font(14px, 500, 14px, #9197B3);
+            }
+            &:hover {
+                background-color: $COLOR__BLUE;
+                .nav-icon.stroke,
+                .nav-icon-chevron {
+                    svg {
+                        path {
+                            stroke: $COLOR__WHITE;
+                        }
+                    }
+                }
+                .nav-icon.fill {
+                    svg {
+                        path {
+                            fill: $COLOR__WHITE;
+                        }
+                    }
+                }
+                .nav-name {
+                    color: $COLOR__WHITE;
+                }
+            }
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    .nav-button-active {
+        .nav-button {
+            background-color: $COLOR__BLUE;
+            .nav-icon.customers {
+                svg {
+                    path {
+                        &:nth-child(1) {
+                            fill: $COLOR__WHITE;
+                        }
+                        &:nth-child(2) {
+                            stroke: $COLOR__WHITE;
+                        }
+                        &:nth-child(3) {
+                            fill: $COLOR__WHITE;
+                        }
+                    }
+                }
+            }
+            .nav-icon.stroke,
+            .nav-icon-chevron {
+                svg {
+                    path {
+                        stroke: $COLOR__WHITE;
+                    }
+                }
+            }
+            .nav-icon.fill {
+                svg {
+                    path {
+                        fill: $COLOR__WHITE;
+                    }
+                }
+            }
+            .nav-name {
+                color: $COLOR__WHITE;
             }
         }
     }
 }
 
-.sidebar-footer {}
+.user-info-wrapper {
+    padding: 9px 0;
+    cursor: pointer;
+    @include flex(row, null, center);
+    .user-photo {
+        margin-right: 12px;
+    }
+    .user-info {
+        .user-name {
+            transition: .3s;
+            @include font(14px, 500, 14px, $COLOR__BLACK);
+        }
+        .user-job {
+            @include font(12px, 400, 12px, $COLOR__GREY)
+        }
+    }
+    &:hover {
+        .user-info {
+            .user-name {
+                color: $COLOR__GREEN;
+            }
+        }
+    }
+}
