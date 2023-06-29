@@ -15,7 +15,7 @@
     @include font(24px, 500, 24px, $COLOR__BLACK);
     .hello {
         display: inline-block;
-        animation: wobble-hor-bottom 1s 1s both;
+        animation: wobble-hor-bottom 1.5s 1s both;
         animation-iteration-count: 2;
     }
 }
@@ -68,6 +68,30 @@
         }
     }
 }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  thead {
+   
+  }
+  
+  th {
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+
+
+
+
 
 @keyframes wobble-hor-bottom {
     100% {
