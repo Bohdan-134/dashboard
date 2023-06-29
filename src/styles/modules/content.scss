@@ -1,16 +1,63 @@
 @import '../utils/main.utils.scss';
 
 .content {
-    padding: 41px 95px 41px 71px;
+    padding: 45px 95px 45px 71px;
     flex-grow: 1;
     background-color: #FAFBFF;
-    overflow-y: scroll;
 }
 
 .content-header {
-    margin-bottom: 51px;
+    margin-bottom: 66px;
 }
 
 .content-title {
+    margin-bottom: 51px;
     @include font(24px, 500, 24px, $COLOR__BLACK);
+}
+
+.customers-content-header {
+    padding: 0 51px 0 38px;
+    margin-bottom: 51px;
+    @include flex(row, space-between, center);
+    .customers-title {
+        margin-bottom: 14px;
+        @include font(24px, 500, 24px, $COLOR__BLACK);
+    }
+    .status {
+        @include font(14px, 400, 14px, $COLOR__GREEN);
+    }
+}
+
+.search-form {
+    padding: 0 8px;
+    width: 216px;
+    height: 38px;
+    border-radius: 10px;
+    background: #F9FBFF;
+    @include flex(row, null, center);
+    .btn-search {
+        margin-right: 8px;
+        background-color: transparent;
+        @include flex(row, center, center);
+        svg {
+            path {
+                transition: .3s;
+            }
+        }
+        &:hover {
+            svg {
+                path {
+                    stroke: $COLOR__BLACK;
+                }
+            }
+        }
+    }
+    .i-text {
+        flex: 1;
+        background-color: transparent;
+        @include font(12px, 400, 12px, $COLOR__BLACK);
+        &::placeholder {
+            @include font(12px, 400, 12px, #B5B7C0);
+        }
+    }
 }

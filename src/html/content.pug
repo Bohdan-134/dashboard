@@ -3,7 +3,14 @@
 .content-main
     .container
         .customers-content
-            .customers-content__header
-                h3.customers-title All Customers
-            .customers-content__main
-            .customers-content__footer
+            .customers-content-header
+                .customers-content-header-left
+                    h3.customers-title All Customers
+                    span.status Active Members
+                .customers-content-header-right
+                    form(action="#").search-form
+                        button(type="submit").btn-search
+                            include ../img/search.svg 
+                        input(type="text" placeholder="Search").i-text
+            .customers-content-main
+            .customers-content-footer
