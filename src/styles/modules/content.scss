@@ -12,6 +12,7 @@
 
 .content-title {
     margin-bottom: 51px;
+    letter-spacing: -0.22px;
     @include font(24px, 500, 24px, $COLOR__BLACK);
     .hello {
         display: inline-block;
@@ -22,9 +23,10 @@
 
 .customers-content-header {
     padding: 0 51px 0 38px;
-    margin-bottom: 51px;
+    margin-bottom: 32px;
     @include flex(row, space-between, center);
     .customers-title {
+        letter-spacing: -1.22px;
         margin-bottom: 14px;
         @include font(24px, 500, 24px, $COLOR__BLACK);
     }
@@ -69,28 +71,97 @@
     }
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  thead {
-   
-  }
-  
-  th {
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+.customers-table-wrapp {
+  padding: 0 38px;
+  overflow: hidden;
+}
 
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
 
+.table-header {
+  .table-row {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      transform: translate(-50%);
+      width: 200%;
+      height: 1px;
+      background-color: #EEE;
+    }
+    .table-header-title {
+      padding: 14px 0;
+      text-align: left;
+      color: #B5B7C0;
+      font-size: 14px;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      letter-spacing: -0.14px;
+      @include font(14px, 500, 14px, $COLOR__GREY);
+    }
+    .table-header-title.status {
+      text-align: center;
+    }
+  }
+}
 
+.table-main {
+  .table-row {
+    border-bottom: 1px solid #EEE;
+    .td-text {
+      padding: 24px 0;
+    }
+    .td-text,
+    .td-text a {
+      @include font(14px, 500, 14px, #292D32);
+    }
+    .td-text a {
+      transition: .3s;
+      &:hover {
+        color: $COLOR__GREEN;
+      } 
+    }
+    .td-status {
+      @include flex(row, center, center);
+      .td-active,
+      .td-inactive {
+        width: 80px;
+        height: 29px;
+        text-align: center;
+        cursor: default;
+        @include flex(row, center, center)
+      }
+      .td-active {
+        border-radius: 4px;
+        border: 1px solid #00B087;
+        background-color: rgba(22, 192, 152, 0.38);
+        @include font(14px, 500, 14px, #008767);
+      }
+      .td-inactive {
+        border-radius: 4px;
+        border: 1px solid #DF0404;
+        background: #FFC5C5;
+        @include font(14px, 500, 14px, #DF0404);
+      }
+    }
+  }
+}
 
+.customers-content-footer {
+  padding: 0 38px;
+  margin-top: 32px;
+  .showing-data {
+    letter-spacing: -0.14px;
+    @include font(14px, 500, 14px, $COLOR__GREY);
+  }
+}
 
 
 @keyframes wobble-hor-bottom {

@@ -15,27 +15,36 @@
             .customers-content-main
                 .customers-table-wrapp
                     table.table
-                        thead
-                            tr
-                                th Customer Name
-                                th Company
-                                th Phone Number
-                                th Email
-                                th Country
-                                th Status
-                        tbody
-                            tr
-                                td Jane Cooper
-                                td Microsoft
-                                td (225) 555-0118
-                                td jane@microsoft.com
-                                td United States
-                                td Active
-                            tr
-                                td John Doe
-                                td Apple
-                                td (555) 123-4567
-                                td john@apple.com
-                                td United States
-                                td Inactive
+                        thead.table-header
+                            tr.table-row
+                                th.table-header-title Customer Name
+                                th.table-header-title Company
+                                th.table-header-title Phone Number
+                                th.table-header-title Email
+                                th.table-header-title Country
+                                th.table-header-title.status Status
+                        tbody.table-main
+                            tr.table-row
+                                td.td-text Jane Cooper
+                                td.td-text Microsoft
+                                td.td-text
+                                    a(href="tel:2255550118") (225) 555-0118
+                                td.td-text
+                                    a(href="mailto:jane@microsoft.com") jane@microsoft.com
+                                td.td-text United States
+                                td.td-text.td-status
+                                    .td-active Active
+                            tr.table-row
+                                td.td-text Jane Cooper
+                                td.td-text Microsoft
+                                td.td-text
+                                    a(href="tel:2255550118") (225) 555-0118
+                                td.td-text
+                                    a(href="mailto:jane@microsoft.com") jane@microsoft.com
+                                td.td-text United States
+                                td.td-text.td-status
+                                    .td-inactive Inactive
             .customers-content-footer
+                .showing-data Showing data 1 to 8 of  256K entries
+                .pagination
+                    
