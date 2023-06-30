@@ -124,3 +124,42 @@ function createTableCell(text) {
   cell.textContent = text;
   return cell;
 }
+
+const navButtons = document.querySelectorAll('.nav-button');
+
+const container = document.querySelector('.container');
+
+navButtons.forEach(function(button) {
+  button.addEventListener('click', function() {
+    // Удаляем класс .nav-button-active у текущего активного элемента
+    const activeButton = document.querySelector('.nav-button-active');
+    if (activeButton) {
+      activeButton.closest('li').classList.remove('nav-button-active');
+    }
+
+    // Добавляем класс .nav-button-active к родительскому элементу li нажатой кнопки
+    this.closest('li').classList.add('nav-button-active');
+
+    // Отображаем контент в .container
+    container.innerHTML = '';
+    const contentWrapper = document.createElement('div');
+    contentWrapper.classList.add('content-wrapper');
+    const contentText = document.createElement('h3');
+    contentText.innerText = 'Что-то пошло не так';
+    contentWrapper.appendChild(contentText);
+    container.appendChild(contentWrapper);
+  });
+});
+
+// navButtons.forEach(function(button) {
+//   button.addEventListener('click', function() {
+//     // Удаляем класс .nav-button-active у текущего активного элемента
+//     const activeButton = document.querySelector('.nav-button-active');
+//     if (activeButton) {
+//       activeButton.classList.remove('nav-button-active');
+//     }
+
+//     // Добавляем класс .nav-button-active к нажатой кнопке
+//     this.classList.add('nav-button-active');
+//   });
+// });
