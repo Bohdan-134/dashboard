@@ -1,165 +1,202 @@
-// Функция для получения данных с Firebase
-function fetchDataFromFirebase() {
-    return fetch("https://dashboard-70ed8-default-rtdb.firebaseio.com/.json")
-      .then(response => response.json())
-      .then(data => {
-        // Обработка полученных данных
-        return data;
-      });
-  }
-  
-  // Функция для отображения данных в таблице
-  function displayTableData(data) {
+// Функция для отображения данных в таблице
+function displayTableData(data, currentPage, itemsPerPage) {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const dataArray = Object.values(data).slice(startIndex, endIndex);
+
     const tableBody = document.querySelector(".table-main");
-  
+
     // Очищаем содержимое tbody
     tableBody.innerHTML = "";
 
-    const dataArray = Object.values(data);
-  
     // Генерируем строки данных
     dataArray.forEach(item => {
-      const row = document.createElement("tr");
-      row.classList.add("table-row");
-  
-      // Создаем ячейки данных
-      const nameCell = document.createElement("td");
-      nameCell.classList.add("td-text");
-      nameCell.textContent = item["Customer Name"];
-      row.appendChild(nameCell);
-  
-      const companyCell = document.createElement("td");
-      companyCell.classList.add("td-text");
-      companyCell.textContent = item["Company"];
-      row.appendChild(companyCell);
-  
-      const phoneNumberCell = document.createElement("td");
-      phoneNumberCell.classList.add("td-text");
-      phoneNumberCell.textContent = item["Phone Number"];
-      row.appendChild(phoneNumberCell);
-  
-      const emailCell = document.createElement("td");
-      emailCell.classList.add("td-text");
-      emailCell.textContent = item["Email"];
-      row.appendChild(emailCell);
-  
-      const countryCell = document.createElement("td");
-      countryCell.classList.add("td-text");
-      countryCell.textContent = item["Country"];
-      row.appendChild(countryCell);
-  
-      const statusCell = document.createElement("td");
-      statusCell.classList.add("td-text", "td-status");
-      statusCell.textContent = item["Status"];
-      row.appendChild(statusCell);
-  
-      // Добавляем строку в tbody
-      tableBody.appendChild(row);
+        const row = createTableRow(item);
+        tableBody.appendChild(row);
     });
-  }
-  
-  // Запрашиваем данные с Firebase и отображаем их в таблице
-  fetchDataFromFirebase().then(data => {
-    displayTableData(data);
-  });
-  
-  // Получаем ссылки на элементы формы и таблицы
-const searchForm = document.querySelector('.search-form');
-const searchInput = document.querySelector('.i-text');
-const tableRows = document.querySelectorAll('.table-row');
+}
 
-// Получаем ссылки на элементы таблицы
-const tableBody = document.querySelector('.table-main');
+let currentPage = 1;
 
-// Слушаем событие input на текстовом поле поиска
-searchInput.addEventListener('input', (event) => {
-  const searchValue = event.target.value.toLowerCase();
-
-  // Очищаем таблицу
-  tableBody.innerHTML = '';
-
-  // Получаем данные с Firebase
-  fetch('https://dashboard-70ed8-default-rtdb.firebaseio.com/.json')
-    .then(response => response.json())
-    .then(data => {
-      // Фильтруем данные по полю "Customer Name" и отрисовываем только соответствующие строки
-      Object.values(data).forEach(item => {
-        const customerName = item['Customer Name'].toLowerCase();
-
-        if (customerName.includes(searchValue)) {
-          const newRow = createTableRow(item);
-          tableBody.appendChild(newRow);
-        }
-      });
-    })
-    .catch(error => console.log(error));
-});
-
-// Функция для создания новой строки таблицы
+// Функция для создания строки таблицы
 function createTableRow(item) {
-  const row = document.createElement('tr');
-  
-  // Создаем ячейки и заполняем их данными из объекта
-  const customerNameCell = createTableCell(item['Customer Name']);
-  const companyCell = createTableCell(item['Company']);
-  const phoneNumberCell = createTableCell(item['Phone Number']);
-  const emailCell = createTableCell(item['Email']);
-  const countryCell = createTableCell(item['Country']);
-  const statusCell = createTableCell(item['Status']);
+    const row = document.createElement("tr");
+    row.classList.add("table-row");
 
-  // Добавляем ячейки в строку
-  row.appendChild(customerNameCell);
-  row.appendChild(companyCell);
-  row.appendChild(phoneNumberCell);
-  row.appendChild(emailCell);
-  row.appendChild(countryCell);
-  row.appendChild(statusCell);
+    // Создаем ячейки данных
+    const customerNameCell = createTableCell(item["Customer Name"]);
+    const companyCell = createTableCell(item["Company"]);
+    const phoneNumberCell = createLinkTableCell(item["Phone Number"], `tel:${item["Phone Number"]}`);
+    const emailCell = createLinkTableCell(item["Email"], `mailto:${item["Email"]}`);
+    const countryCell = createTableCell(item["Country"]);
+    const statusCell = createStatusTableCell(item["Status"]);
 
-  return row;
+    // Добавляем ячейки в строку
+    row.appendChild(customerNameCell);
+    row.appendChild(companyCell);
+    row.appendChild(phoneNumberCell);
+    row.appendChild(emailCell);
+    row.appendChild(countryCell);
+    row.appendChild(statusCell);
+
+    return row;
 }
 
 // Функция для создания ячейки таблицы
 function createTableCell(text) {
-  const cell = document.createElement('td');
-  cell.textContent = text;
-  return cell;
+    const cell = document.createElement("td");
+    cell.classList.add("td-text");
+    cell.textContent = text;
+    return cell;
 }
 
-const navButtons = document.querySelectorAll('.nav-button');
+// Функция для создания ячейки-ссылки таблицы
+function createLinkTableCell(text, link) {
+    const cell = document.createElement("td");
+    cell.classList.add("td-text");
+    const linkElement = document.createElement("a");
+    linkElement.href = link;
+    linkElement.textContent = text;
+    cell.appendChild(linkElement);
+    return cell;
+}
 
-const container = document.querySelector('.container');
+// Функция для создания ячейки со статусом
+function createStatusTableCell(status) {
+    const cell = document.createElement("td");
+    cell.classList.add("td-text", "td-status");
+    const statusSpan = document.createElement("span");
+    statusSpan.textContent = status;
+    statusSpan.classList.add(status === "Active" ? "td-active" : "td-inactive");
+    cell.appendChild(statusSpan);
+    return cell;
+}
 
-navButtons.forEach(function(button) {
-  button.addEventListener('click', function() {
-    // Удаляем класс .nav-button-active у текущего активного элемента
-    const activeButton = document.querySelector('.nav-button-active');
-    if (activeButton) {
-      activeButton.closest('li').classList.remove('nav-button-active');
+// Функция для получения данных с Firebase
+function fetchDataFromFirebase() {
+    return fetch("https://dashboard-70ed8-default-rtdb.firebaseio.com/.json")
+        .then(response => response.json())
+        .then(data => {
+            // Обработка полученных данных
+            return data;
+        });
+}
+
+// Функция для отображения данных в таблице
+function displayTableData(data, currentPage, itemsPerPage) {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const dataArray = Object.values(data).slice(startIndex, endIndex);
+
+    const tableBody = document.querySelector(".table-main");
+
+    // Очищаем содержимое tbody
+    tableBody.innerHTML = "";
+
+    // Генерируем строки данных
+    dataArray.forEach(item => {
+        const row = createTableRow(item);
+        tableBody.appendChild(row);
+    });
+}
+
+// Функция для создания кнопки пагинации
+function createPaginationButton(id, label, icon = null) {
+    const button = document.createElement("button");
+    button.id = id;
+    button.classList.add("pagination-button");
+
+    if (icon) {
+        const iconImg = document.createElement("img");
+        iconImg.src = `../img/${icon}`;
+        iconImg.alt = "Chevron";
+        button.appendChild(iconImg);
+    } else {
+        button.textContent = label;
     }
 
-    // Добавляем класс .nav-button-active к родительскому элементу li нажатой кнопки
-    this.closest('li').classList.add('nav-button-active');
+    const listItem = document.createElement("li");
+    listItem.classList.add("pagination-item");
+    listItem.appendChild(button);
 
-    // Отображаем контент в .container
-    container.innerHTML = '';
-    const contentWrapper = document.createElement('div');
-    contentWrapper.classList.add('content-wrapper');
-    const contentText = document.createElement('h3');
-    contentText.innerText = 'Что-то пошло не так';
-    contentWrapper.appendChild(contentText);
-    container.appendChild(contentWrapper);
-  });
+    return listItem;
+}
+
+// Функция для отображения кнопок пагинации
+function generatePaginationButtons(data, itemsPerPage) {
+    const totalItems = Object.values(data).length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    const paginationList = document.querySelector(".pagination-list");
+    paginationList.innerHTML = "";
+
+    // Кнопка "Предыдущая"
+    const prevButton = createPaginationButton("pagination-prev", "Prev", "chevron.svg");
+    paginationList.appendChild(prevButton);
+
+    // Кнопки с номерами страниц
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = createPaginationButton(`pagination${i}`, i);
+        paginationList.appendChild(pageButton);
+    }
+
+    // Кнопка "Следующая"
+    const nextButton = createPaginationButton("pagination-next", "Next", "chevron.svg");
+    paginationList.appendChild(nextButton);
+
+    // Обработчики событий для кнопок пагинации
+    prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            displayTableData(data, currentPage, itemsPerPage);
+        }
+    });
+
+    nextButton.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayTableData(data, currentPage, itemsPerPage);
+        }
+    });
+
+    const pageButtons = Array.from(paginationList.querySelectorAll(".pagination-button"));
+    pageButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const pageNumber = parseInt(button.textContent);
+            if (pageNumber !== currentPage) {
+                currentPage = pageNumber;
+                displayTableData(data, currentPage, itemsPerPage);
+            }
+        });
+    });
+}
+
+const searchForm = document.querySelector(".search-form");
+const searchInput = document.querySelector(".i-text");
+const tableBody = document.querySelector(".table-main");
+
+// Запрашиваем данные с Firebase и отображаем их в таблице
+fetchDataFromFirebase().then(data => {
+    const itemsPerPage = 8;
+    let currentPage = 1;
+
+    displayTableData(data, currentPage, itemsPerPage);
+    generatePaginationButtons(data, itemsPerPage);
+
+    // Слушаем событие input на текстовом поле поиска
+    searchInput.addEventListener("input", event => {
+        const searchValue = event.target.value.toLowerCase();
+
+        // Очищаем таблицу
+        tableBody.innerHTML = "";
+
+        // Фильтруем данные по полю "Customer Name"
+        const filteredData = Object.values(data).filter(item => {
+            const customerName = item["Customer Name"].toLowerCase();
+            return customerName.includes(searchValue);
+        });
+
+        displayTableData(filteredData, currentPage, itemsPerPage);
+        generatePaginationButtons(filteredData, itemsPerPage);
+    });
 });
-
-// navButtons.forEach(function(button) {
-//   button.addEventListener('click', function() {
-//     // Удаляем класс .nav-button-active у текущего активного элемента
-//     const activeButton = document.querySelector('.nav-button-active');
-//     if (activeButton) {
-//       activeButton.classList.remove('nav-button-active');
-//     }
-
-//     // Добавляем класс .nav-button-active к нажатой кнопке
-//     this.classList.add('nav-button-active');
-//   });
-// });

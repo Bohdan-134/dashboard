@@ -24,27 +24,17 @@
                                 th.table-header-title Country
                                 th.table-header-title.status Status
                         tbody.table-main
-                            tr.table-row
-                                td.td-text Jane Cooper
-                                td.td-text Microsoft
-                                td.td-text
-                                    a(href="tel:2255550118") (225) 555-0118
-                                td.td-text
-                                    a(href="mailto:jane@microsoft.com") jane@microsoft.com
-                                td.td-text United States
-                                td.td-text.td-status
-                                    .td-active Active
-                            tr.table-row
-                                td.td-text Jane Cooper
-                                td.td-text Microsoft
-                                td.td-text
-                                    a(href="tel:2255550118") (225) 555-0118
-                                td.td-text
-                                    a(href="mailto:jane@microsoft.com") jane@microsoft.com
-                                td.td-text United States
-                                td.td-text.td-status
-                                    .td-inactive Inactive
             .customers-content-footer
                 .showing-data Showing data 1 to 8 of  256K entries
                 .pagination
-                    
+                    ul.pagination-list
+                        li.pagination-item.prev
+                            button#pagination-prev
+                                include ../img/chevron.svg
+                        li.pagination-item
+                            button#pagination1 1
+                        li.pagination-item
+                            button#pagination2 2
+                        li.pagination-item.next
+                            button#pagination-next
+                                include ../img/chevron.svg
