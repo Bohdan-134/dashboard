@@ -1,5 +1,6 @@
 @import '../utils/main.utils.scss';
 .content {
+    overflow-y: scroll;
     padding: 45px 95px 45px 71px;
     flex-grow: 1;
     background-color: #FAFBFF;
@@ -16,7 +17,7 @@
     .hello {
         display: inline-block;
         animation: wobble-hor-bottom 1.5s 1s both;
-        animation-iteration-count: 2;
+        animation-iteration-count: 10;
     }
 }
 
@@ -190,6 +191,7 @@
                 @include flex(row, center, center);
                 svg {
                     path {
+                        stroke: #404B52;
                         transition: .3s;
                     }
                 }
@@ -214,8 +216,10 @@
             }
         }
         .pagination-item.prev {
-            svg {
-                transform: rotate(180deg);
+            button {
+                svg {
+                    transform: rotate(180deg);
+                }
             }
         }
     }

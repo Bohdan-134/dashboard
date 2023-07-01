@@ -18,6 +18,7 @@ function displayTableData(data, currentPage, itemsPerPage) {
 
 let currentPage = 1;
 
+
 // Функция для создания строки таблицы
 function createTableRow(item) {
     const row = document.createElement("tr");
@@ -104,19 +105,20 @@ function displayTableData(data, currentPage, itemsPerPage) {
 function createPaginationButton(id, label, icon = null) {
     const button = document.createElement("button");
     button.id = id;
-    button.classList.add("pagination-button");
-
+    button.classList.add(`${(id === `pagination-prev` || id === `pagination-next`) ? null : 'pagination-button'}`);
     if (icon) {
-        const iconImg = document.createElement("img");
-        iconImg.src = `../img/${icon}`;
-        iconImg.alt = "Chevron";
-        button.appendChild(iconImg);
+        button.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="chevron-right 2"><path id="Vector" d="M6 12L10 8L6 4" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g></svg>';
     } else {
         button.textContent = label;
     }
 
     const listItem = document.createElement("li");
     listItem.classList.add("pagination-item");
+    if (id === 'pagination-prev') {
+        listItem.classList.add("prev");
+    } else if (id === 'pagination-next') {
+        listItem.classList.add("next");
+    }
     listItem.appendChild(button);
 
     return listItem;
@@ -150,6 +152,7 @@ function generatePaginationButtons(data, itemsPerPage) {
             currentPage--;
             displayTableData(data, currentPage, itemsPerPage);
         }
+
     });
 
     nextButton.addEventListener("click", () => {
@@ -178,7 +181,6 @@ const tableBody = document.querySelector(".table-main");
 // Запрашиваем данные с Firebase и отображаем их в таблице
 fetchDataFromFirebase().then(data => {
     const itemsPerPage = 8;
-    let currentPage = 1;
 
     displayTableData(data, currentPage, itemsPerPage);
     generatePaginationButtons(data, itemsPerPage);
