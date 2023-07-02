@@ -1,3 +1,105 @@
+window.onload = createCustomersContent();
+
+const buttons = document.querySelectorAll(".nav-button");
+const container = document.querySelector(".container");
+
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        buttons.forEach(btn => {
+            btn.classList.remove("nav-button-active");
+        });
+
+        button.classList.add("nav-button-active");
+
+        if (button.getAttribute("data-name") !== "customers") {
+            container.innerHTML = '<div class="oops-title">Oops, something went wrong</div>';
+        } else {
+            createCustomersContent()
+        }
+    });
+});
+
+function createCustomersContent() {
+    renderCustomersContent();
+    fetchDataFromFirebase().then(data => {
+        const searchInput = document.querySelector(".i-text");
+        const tableBody = document.querySelector(".table-main");
+        const itemsPerPage = 8;
+
+        displayTableData(data, currentPage, itemsPerPage);
+        generatePaginationButtons(data, itemsPerPage);
+
+        // Слушаем событие input на текстовом поле поиска
+        searchInput.addEventListener("input", event => {
+            const searchValue = event.target.value.toLowerCase();
+
+            // Очищаем таблицу
+            tableBody.innerHTML = "";
+
+            // Фильтруем данные по полю "Customer Name"
+            const filteredData = Object.values(data).filter(item => {
+                const customerName = item["Customer Name"].toLowerCase();
+                return customerName.includes(searchValue);
+            });
+
+            currentPage = 1;
+
+            displayTableData(filteredData, currentPage, itemsPerPage);
+            generatePaginationButtons(filteredData, itemsPerPage);
+        });
+    });
+}
+
+function renderCustomersContent() {
+    const container = document.querySelector(".container");
+
+    const html = `
+    <div class="customers-content">
+      <div class="customers-content-header">
+        <div class="customers-content-header-left">
+          <h3 class="customers-title">All Customers</h3>
+          <span class="status">Active Members</span>
+        </div>
+        <div class="customers-content-header-right">
+          <form action="#" class="search-form">
+            <button type="submit" class="btn-search">
+              <img src="../img/search.svg" alt="Search">
+            </button>
+            <input type="text" placeholder="Search" class="i-text">
+          </form>
+        </div>
+      </div>
+      <div class="customers-content-main">
+        <div class="customers-table-wrapp">
+          <table class="table">
+            <thead class="table-header">
+              <tr class="table-row">
+                <th class="table-header-title">Customer Name</th>
+                <th class="table-header-title">Company</th>
+                <th class="table-header-title">Phone Number</th>
+                <th class="table-header-title">Email</th>
+                <th class="table-header-title">Country</th>
+                <th class="table-header-title status">Status</th>
+              </tr>
+            </thead>
+            <tbody class="table-main"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="customers-content-footer">
+        <div class="showing-data"></div>
+        <div class="pagination">
+          <ul class="pagination-list"></ul>
+        </div>
+      </div>
+    </div>
+  `;
+
+    // Вставляем сгенерированный HTML-код в блок .container
+    container.innerHTML = html;
+}
+
+
 // Функция для отображения данных в таблице
 function displayTableData(data, currentPage, itemsPerPage) {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -88,7 +190,6 @@ function displayTableData(data, currentPage, itemsPerPage) {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const dataArray = Object.values(data).slice(startIndex, endIndex);
-
     const tableBody = document.querySelector(".table-main");
 
     // Очищаем содержимое tbody
@@ -99,6 +200,7 @@ function displayTableData(data, currentPage, itemsPerPage) {
         const row = createTableRow(item);
         tableBody.appendChild(row);
     });
+    updateShowingDataInfo(currentPage, itemsPerPage, Object.values(data).length);
 }
 
 // Функция для создания кнопки пагинации
@@ -151,6 +253,7 @@ function generatePaginationButtons(data, itemsPerPage) {
         if (currentPage > 1) {
             currentPage--;
             displayTableData(data, currentPage, itemsPerPage);
+            updatePaginationButtons();
         }
 
     });
@@ -159,46 +262,43 @@ function generatePaginationButtons(data, itemsPerPage) {
         if (currentPage < totalPages) {
             currentPage++;
             displayTableData(data, currentPage, itemsPerPage);
+            updatePaginationButtons();
         }
     });
 
     const pageButtons = Array.from(paginationList.querySelectorAll(".pagination-button"));
     pageButtons.forEach(button => {
-        button.addEventListener("click", () => {
+        button.addEventListener("click", () => { 
+          
             const pageNumber = parseInt(button.textContent);
             if (pageNumber !== currentPage) {
                 currentPage = pageNumber;
                 displayTableData(data, currentPage, itemsPerPage);
+                updatePaginationButtons();
             }
         });
     });
+
+    // Функция для обновления классов кнопок пагинации
+    function updatePaginationButtons() {
+      pageButtons.forEach(button => {
+          const pageNumber = parseInt(button.textContent);
+          if (pageNumber === currentPage) {
+              button.classList.add("btn-pagination-active");
+          } else {
+              button.classList.remove("btn-pagination-active");
+          }
+      });
+  }
+
+  // Вызываем функцию обновления классов кнопок после их генерации
+  updatePaginationButtons();
 }
 
-const searchForm = document.querySelector(".search-form");
-const searchInput = document.querySelector(".i-text");
-const tableBody = document.querySelector(".table-main");
+function updateShowingDataInfo(currentPage, itemsPerPage, totalItems) {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
 
-// Запрашиваем данные с Firebase и отображаем их в таблице
-fetchDataFromFirebase().then(data => {
-    const itemsPerPage = 8;
-
-    displayTableData(data, currentPage, itemsPerPage);
-    generatePaginationButtons(data, itemsPerPage);
-
-    // Слушаем событие input на текстовом поле поиска
-    searchInput.addEventListener("input", event => {
-        const searchValue = event.target.value.toLowerCase();
-
-        // Очищаем таблицу
-        tableBody.innerHTML = "";
-
-        // Фильтруем данные по полю "Customer Name"
-        const filteredData = Object.values(data).filter(item => {
-            const customerName = item["Customer Name"].toLowerCase();
-            return customerName.includes(searchValue);
-        });
-
-        displayTableData(filteredData, currentPage, itemsPerPage);
-        generatePaginationButtons(filteredData, itemsPerPage);
-    });
-});
+  const showingDataInfo = document.querySelector(".showing-data");
+  showingDataInfo.textContent = `Showing data ${startIndex + 1} to ${endIndex} of ${totalItems} entries`;
+}

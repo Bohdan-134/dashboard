@@ -1,0 +1,32 @@
+@keyframes wobble-hor-bottom {
+    100% {
+        transform: translateX(0%);
+        transform-origin: 50% 50%;
+    }
+    15% {
+        transform: rotate(-15deg);
+    }
+    30% {
+        transform: rotate(15deg);
+    }
+    45% {
+        transform: rotate(-8deg);
+    }
+    60% {
+        transform: rotate(6deg);
+    }
+    75% {
+        transform: rotate(-4deg);
+    }
+}
+
+@keyframes slide-in-bottom {
+    0% {
+        bottom: -20px;
+        opacity: 0;
+    }
+    100% {
+        bottom: 0;
+        opacity: 1;
+    }
+}
