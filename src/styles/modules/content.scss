@@ -7,17 +7,40 @@
 }
 
 .content-header {
-    margin-bottom: 66px;
+    margin-bottom: 64px;
+    @include flex(row, space-between, center);
 }
 
 .content-title {
-    margin-bottom: 51px;
     letter-spacing: -0.22px;
     @include font(24px, 500, 24px, $COLOR__BLACK);
     .hello {
         display: inline-block;
         animation: wobble-hor-bottom 1.5s 1s both;
         animation-iteration-count: 10;
+    }
+}
+
+.open-mobile-btn {
+    display: none;
+    button {
+        background-color: transparent; 
+        @include flex(column, null, center);
+        .dot {
+            margin-bottom: 2px;
+            width: 4px;
+            height: 4px;
+            border-radius: 100%;
+            background-color: $COLOR__BLACK;
+            transition: .3s;
+        }
+    }
+    &:hover {
+        button {
+            .dot {
+                background-color: $COLOR__BLUE;
+            }
+        }
     }
 }
 
@@ -71,7 +94,6 @@
 
 .customers-table-wrapp {
     padding: 0 38px;
-    overflow-x: scroll;
 }
 
 
@@ -229,5 +251,53 @@
                 }
             }
         }
+    }
+}
+
+@media screen and (max-width: 1380px) {
+    .open-mobile-btn {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 1070px) {
+    .customers-table-wrapp {
+        overflow-x: scroll;
+    }
+}
+
+@media screen and (max-width: 710px) {
+    .content {
+        padding: 45px 30px;
+    }
+    .customers-content-header {
+        padding: 0 30px;
+        @include flex(column, space-between, center);
+    }
+    .customers-content-header-left {
+        margin-bottom: 20px;
+        width: 100%;
+        @include flex(row, space-between, center);
+    }
+    .customers-content-header .customers-title {
+        margin-bottom: 0;
+    }
+    .customers-content-header-right {
+        width: 100%
+    }
+    .search-form {
+        width: 100%;
+    }
+    .customers-content-footer {
+        @include flex(column-reverse, null, center);
+    }
+    .pagination {
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .content {
+        padding: 40px 30px;
     }
 }
