@@ -4,6 +4,22 @@
     padding: 45px 95px 45px 71px;
     flex-grow: 1;
     background-color: #FAFBFF;
+&::-webkit-scrollbar {
+    width: 5px;
+}
+  
+&::-webkit-scrollbar-track {
+    background: $COLOR__GREY;
+}
+
+&::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #80859d;
+}
+
+&::-webkit-scrollbar-thumb:hover {
+    background: red;
+} 
 }
 
 .content-header {

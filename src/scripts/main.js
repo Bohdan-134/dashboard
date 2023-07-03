@@ -255,3 +255,24 @@ function updateShowingDataInfo(currentPage, itemsPerPage, totalItems) {
   const showingDataInfo = document.querySelector(".showing-data");
   showingDataInfo.textContent = `Showing data ${startIndex + 1} to ${endIndex} of ${totalItems} entries`;
 }
+
+const openMobileMenuBtn = document.getElementById('open-mobile-menu');
+const closeMobileMenuBtn = document.getElementById('close-menu');
+
+openMobileMenuBtn.addEventListener('click', function() {
+    openMobileMenu();
+});
+
+closeMobileMenuBtn.addEventListener('click', function() {
+    closeMobileMenu();
+});
+
+function openMobileMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.add('active');
+}
+
+function closeMobileMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.remove('active');
+}
