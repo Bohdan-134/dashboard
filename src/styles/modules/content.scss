@@ -71,11 +71,14 @@
 
 .customers-table-wrapp {
     padding: 0 38px;
-    overflow: hidden;
+    overflow-x: scroll;
 }
+
+
 
 .table {
     border-collapse: collapse;
+    min-width: 830px;
     width: 100%;
 }
 
@@ -88,7 +91,7 @@
             bottom: 0px;
             left: 50%;
             transform: translate(-50%);
-            width: 200%;
+            width: calc(100% + 76px);
             height: 1px;
             background-color: #EEE;
         }

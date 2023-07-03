@@ -29,21 +29,16 @@ function createCustomersContent() {
         displayTableData(data, currentPage, itemsPerPage);
         generatePaginationButtons(data, itemsPerPage);
 
-        // Слушаем событие input на текстовом поле поиска
         searchInput.addEventListener("input", event => {
             const searchValue = event.target.value.toLowerCase();
 
-            // Очищаем таблицу
             tableBody.innerHTML = "";
 
-            // Фильтруем данные по полю "Customer Name"
             const filteredData = Object.values(data).filter(item => {
                 const customerName = item["Customer Name"].toLowerCase();
                 return customerName.includes(searchValue);
             });
-
             currentPage = 1;
-
             displayTableData(filteredData, currentPage, itemsPerPage);
             generatePaginationButtons(filteredData, itemsPerPage);
         });
@@ -52,7 +47,6 @@ function createCustomersContent() {
 
 function renderCustomersContent() {
     const container = document.querySelector(".container");
-
     const html = `
     <div class="customers-content">
       <div class="customers-content-header">
@@ -94,39 +88,15 @@ function renderCustomersContent() {
       </div>
     </div>
   `;
-
-    // Вставляем сгенерированный HTML-код в блок .container
     container.innerHTML = html;
-}
-
-
-// Функция для отображения данных в таблице
-function displayTableData(data, currentPage, itemsPerPage) {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const dataArray = Object.values(data).slice(startIndex, endIndex);
-
-    const tableBody = document.querySelector(".table-main");
-
-    // Очищаем содержимое tbody
-    tableBody.innerHTML = "";
-
-    // Генерируем строки данных
-    dataArray.forEach(item => {
-        const row = createTableRow(item);
-        tableBody.appendChild(row);
-    });
 }
 
 let currentPage = 1;
 
-
-// Функция для создания строки таблицы
 function createTableRow(item) {
     const row = document.createElement("tr");
     row.classList.add("table-row");
 
-    // Создаем ячейки данных
     const customerNameCell = createTableCell(item["Customer Name"]);
     const companyCell = createTableCell(item["Company"]);
     const phoneNumberCell = createLinkTableCell(item["Phone Number"], `tel:${item["Phone Number"]}`);
@@ -134,7 +104,6 @@ function createTableRow(item) {
     const countryCell = createTableCell(item["Country"]);
     const statusCell = createStatusTableCell(item["Status"]);
 
-    // Добавляем ячейки в строку
     row.appendChild(customerNameCell);
     row.appendChild(companyCell);
     row.appendChild(phoneNumberCell);
@@ -145,7 +114,6 @@ function createTableRow(item) {
     return row;
 }
 
-// Функция для создания ячейки таблицы
 function createTableCell(text) {
     const cell = document.createElement("td");
     cell.classList.add("td-text");
@@ -153,7 +121,6 @@ function createTableCell(text) {
     return cell;
 }
 
-// Функция для создания ячейки-ссылки таблицы
 function createLinkTableCell(text, link) {
     const cell = document.createElement("td");
     cell.classList.add("td-text");
@@ -164,7 +131,6 @@ function createLinkTableCell(text, link) {
     return cell;
 }
 
-// Функция для создания ячейки со статусом
 function createStatusTableCell(status) {
     const cell = document.createElement("td");
     cell.classList.add("td-text", "td-status");
@@ -175,27 +141,22 @@ function createStatusTableCell(status) {
     return cell;
 }
 
-// Функция для получения данных с Firebase
 function fetchDataFromFirebase() {
     return fetch("https://dashboard-70ed8-default-rtdb.firebaseio.com/.json")
         .then(response => response.json())
         .then(data => {
-            // Обработка полученных данных
             return data;
         });
 }
 
-// Функция для отображения данных в таблице
 function displayTableData(data, currentPage, itemsPerPage) {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const dataArray = Object.values(data).slice(startIndex, endIndex);
     const tableBody = document.querySelector(".table-main");
 
-    // Очищаем содержимое tbody
     tableBody.innerHTML = "";
 
-    // Генерируем строки данных
     dataArray.forEach(item => {
         const row = createTableRow(item);
         tableBody.appendChild(row);
@@ -203,7 +164,6 @@ function displayTableData(data, currentPage, itemsPerPage) {
     updateShowingDataInfo(currentPage, itemsPerPage, Object.values(data).length);
 }
 
-// Функция для создания кнопки пагинации
 function createPaginationButton(id, label, icon = null) {
     const button = document.createElement("button");
     button.id = id;
@@ -226,7 +186,6 @@ function createPaginationButton(id, label, icon = null) {
     return listItem;
 }
 
-// Функция для отображения кнопок пагинации
 function generatePaginationButtons(data, itemsPerPage) {
     const totalItems = Object.values(data).length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -234,21 +193,17 @@ function generatePaginationButtons(data, itemsPerPage) {
     const paginationList = document.querySelector(".pagination-list");
     paginationList.innerHTML = "";
 
-    // Кнопка "Предыдущая"
     const prevButton = createPaginationButton("pagination-prev", "Prev", "chevron.svg");
     paginationList.appendChild(prevButton);
 
-    // Кнопки с номерами страниц
     for (let i = 1; i <= totalPages; i++) {
         const pageButton = createPaginationButton(`pagination${i}`, i);
         paginationList.appendChild(pageButton);
     }
 
-    // Кнопка "Следующая"
     const nextButton = createPaginationButton("pagination-next", "Next", "chevron.svg");
     paginationList.appendChild(nextButton);
 
-    // Обработчики событий для кнопок пагинации
     prevButton.addEventListener("click", () => {
         if (currentPage > 1) {
             currentPage--;
@@ -279,7 +234,6 @@ function generatePaginationButtons(data, itemsPerPage) {
         });
     });
 
-    // Функция для обновления классов кнопок пагинации
     function updatePaginationButtons() {
       pageButtons.forEach(button => {
           const pageNumber = parseInt(button.textContent);
@@ -291,7 +245,6 @@ function generatePaginationButtons(data, itemsPerPage) {
       });
   }
 
-  // Вызываем функцию обновления классов кнопок после их генерации
   updatePaginationButtons();
 }
 
